@@ -10,11 +10,11 @@ public class OrderDAO extends DataAccessObject<Order>{
 
     private static final Logger logger = LoggerFactory.getLogger(OrderDAO.class);
 
-    private final String INSERT = "";
-    private final String UPDATE = "";
-    private final String DELETE = "";
-    private final String GET_ONE = "";
-    private final String GET_ALL = "";
+    private final String INSERT = "INSERT INTO Orders VALUES(?,?,?,?,?)";
+    private final String UPDATE = "UPDATE Orders SET CustomerID=?, TapeID=?, DueDate=?, Status=? WHERE OrderNumber=?";
+    private final String DELETE = "DELETE FROM Orders WHERE OrderNumber=?";
+    private final String GET_ONE = "SELECT * FROM Orders WHERE OrderNumber=?";
+    private final String GET_ALL = "SELECT * FROM Orders";
 
     @Override
     public void create(Order order) {
