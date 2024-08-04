@@ -48,8 +48,10 @@ public class TapeDAO extends DataAccessObject<Tape>{
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()){
+
                 type = rs.getString("type").charAt(0);
-                title = (Title) rs.getObject("TitleID");
+                int titleId = rs.getInt("TitleID");
+               title = new TitleDAO().getById(titleId);
 
                 tape = new Tape(
                         rs.getInt("TapeID"),
@@ -76,7 +78,8 @@ public class TapeDAO extends DataAccessObject<Tape>{
             ResultSet rs = statement.executeQuery();
 
             char type = rs.getString("type").charAt(0);
-            Title title = (Title) rs.getObject("TitleID");
+            int titleId = rs.getInt("TitleID");
+            Title title = new TitleDAO().getById(titleId);
 
             tape = new Tape(
                     rs.getInt("TapeID"),
@@ -100,6 +103,7 @@ public class TapeDAO extends DataAccessObject<Tape>{
             statement.setString(1, String.valueOf(tape.getType()));
             statement.setInt(2, tape.getTitle().getId());
             statement.setInt(3, tape.getId());
+            statement.executeUpdate();
             logger.info("Updating Tape data was a success");
         }catch (SQLException e){
             logger.error("Updating  Tape data failed");
@@ -112,6 +116,7 @@ public class TapeDAO extends DataAccessObject<Tape>{
     public void deleteById(int id) {
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(DELETE)){
             statement.setInt(1, id);
+            statement.execute();
             logger.info("Deleting tape data completed");
         }catch (SQLException e){
             logger.error("Deleting tape data, unsuccessfully");

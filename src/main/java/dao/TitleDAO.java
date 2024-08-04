@@ -117,6 +117,7 @@ public class TitleDAO extends DataAccessObject<Title>{
 
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(DELETE)){
             statement.setInt(1, id);
+            statement.execute();
             logger.info("Deleting a customer-Operarion Sucessfully ");
 
         }catch (SQLException e){

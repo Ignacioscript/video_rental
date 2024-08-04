@@ -89,6 +89,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
             statement.setString(3, customer.getCustomerPhone());
 
             statement.setInt(4, customer.getId());
+            statement.executeUpdate();
             logger.info("Updating a customer-Operarion Sucessfully ");
 
         }catch(SQLException e){
@@ -101,6 +102,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
     public void deleteById(int id) {
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(DELETE)){
             statement.setInt(1, id);
+            statement.execute();
             logger.info("Deleting a customer-Operarion Sucessfully ");
 
         }catch (SQLException e){
