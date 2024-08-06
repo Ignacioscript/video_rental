@@ -1,11 +1,15 @@
 package dao;
 
 import interfaces.DataTransferObject;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import util.DBUtil;
 import java.util.List;
 
 public abstract class DataAccessObject <T extends DataTransferObject>{
 
+
+    protected static final Logger logger = LoggerFactory.getLogger(DataAccessObject.class);
 
     public DataAccessObject(){
         DBUtil.getConnection();
