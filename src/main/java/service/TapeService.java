@@ -17,26 +17,56 @@ public class TapeService extends DataAccessObject<Tape> {
 
     @Override
     public void create(Tape tape) {
-        tapeDAO.create(tape);
+        try {
+            tapeDAO.update(tape);
+            logger.info("Creating Tape was success");
+        }catch (Exception e){
+            logger.error("Error creating Tape data: {}", e.getMessage());
+            throw new RuntimeException("Failed creating Tape data: ", e);
+        }
     }
 
     @Override
     public List<Tape> getAll() {
-        return tapeDAO.getAll();
+        try {
+            return tapeDAO.getAll();
+
+        }catch (Exception e){
+            logger.error("Error retrieving Tape list data: {}", e.getMessage());
+            throw new RuntimeException("Failed retrieving Tape list data: ", e);
+        }
     }
 
     @Override
     public Tape getById(int id) {
-        return tapeDAO.getById(id);
+        try {
+            return tapeDAO.getById(id);
+        }catch (Exception e){
+            logger.error("Error retrieving Tape by ID: {}", e.getMessage());
+            throw new RuntimeException("Failed retrieving Tape by ID: ", e);
+        }
     }
 
     @Override
     public void update(Tape tape) {
-        tapeDAO.update(tape);
+        try {
+            tapeDAO.update(tape);
+            logger.info("Updating Tape was success");
+        }catch (Exception e){
+            logger.error("Error updating Tape data: {}", e.getMessage());
+            throw new RuntimeException("Failed updating Tape data: ", e);
+        }
     }
 
     @Override
     public void deleteById(int id) {
-        tapeDAO.deleteById(id);
+        try {
+            tapeDAO.deleteById(id);
+            logger.info("Deleting Tape by ID was a success");
+        }catch (Exception e){
+            logger.error("Error deleting Tape by ID: {}", e.getMessage());
+            throw new RuntimeException("Failed deleting Tape by ID: ", e);
+        }
+    }
     }
 }

@@ -17,27 +17,57 @@ public class TitleService extends DataAccessObject<Title> {
 
     @Override
     public void create(Title title) {
-        titleDAO.create(title);
+        try {
+            titleDAO.update(title);
+            logger.info("Creating title was success");
+        }catch (Exception e){
+            logger.error("Error creating title data: {}", e.getMessage());
+            throw new RuntimeException("Failed creating title data: ", e);
+        }
 
     }
 
     @Override
     public List<Title> getAll() {
-        return titleDAO.getAll();
+        try {
+            return titleDAO.getAll();
+
+        }catch (Exception e){
+            logger.error("Error retrieving title list data: {}", e.getMessage());
+            throw new RuntimeException("Failed retrieving title list data: ", e);
+        }
     }
 
     @Override
     public Title getById(int id) {
-        return titleDAO.getById(id);
+
+        try {
+            return titleDAO.getById(id);
+        } catch (Exception e) {
+            logger.error("Error retrieving title by ID: {}", e.getMessage());
+            throw new RuntimeException("Failed retrieving title by ID: ", e);
+        }
     }
 
     @Override
     public void update(Title title) {
-        titleDAO.update(title);
+        try {
+            titleDAO.update(title);
+            logger.info("Updating title was success");
+        }catch (Exception e){
+            logger.error("Error updating title data: {}", e.getMessage());
+            throw new RuntimeException("Failed updating title data: ", e);
+        }
     }
 
     @Override
     public void deleteById(int id) {
-        titleDAO.deleteById(id);
+        try {
+            titleDAO.deleteById(id);
+            logger.info("Deleting title by ID was a success");
+        }catch (Exception e){
+            logger.error("Error deleting title by ID: {}", e.getMessage());
+            throw new RuntimeException("Failed deleting title by ID: ", e);
+        }
     }
 }
