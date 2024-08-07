@@ -8,6 +8,7 @@ import java.util.List;
 
 public abstract class DataAccessObject <T extends DataTransferObject>{
 
+    public static final Logger logger = LoggerFactory.getLogger(DataAccessObject.class);
 
     public DataAccessObject(){
         DBUtil.getConnection();
