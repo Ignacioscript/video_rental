@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class DataAccessObject <T extends DataTransferObject>{
 
-
+    //adding a logger for being uses in all subclasses
     protected static final Logger logger = LoggerFactory.getLogger(DataAccessObject.class);
 
     public DataAccessObject(){
