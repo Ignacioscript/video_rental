@@ -7,6 +7,7 @@ import java.util.List;
 public abstract class DataAccessObject <T extends DataTransferObject>{
 
 
+    //atributte to create loggers into all the subclases
     public DataAccessObject(){
         DBUtil.getConnection();
     }
