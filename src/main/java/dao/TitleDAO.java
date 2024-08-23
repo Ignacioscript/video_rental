@@ -34,7 +34,7 @@ public class TitleDAO extends DataAccessObject<Title>{
             statement.setInt(3, title.getYear());
             statement.setDouble(4, title.getPrice());
             statement.setString(5, title.getURL());
-            statement.setBlob(6, convertImageToBlob(title.getImage()));
+            statement.setString(6, title.getImage());
 
             statement.executeUpdate();
             logger.info("Title created successfully");
@@ -60,7 +60,7 @@ public class TitleDAO extends DataAccessObject<Title>{
                         rs.getInt(3),
                         rs.getDouble(4),
                         rs.getString(5),
-                        rs.getBlob(6).toString());
+                        rs.getString(6));
                 titleList.add(title);
             }
             logger.info("Retrieving All data from table success");
@@ -75,7 +75,9 @@ public class TitleDAO extends DataAccessObject<Title>{
     public Title getById(int id) {
         Title title;
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
+            statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
+            rs.next();
 
             title = new Title(
                     rs.getInt("TitleID"),
@@ -83,7 +85,7 @@ public class TitleDAO extends DataAccessObject<Title>{
                     rs.getInt("Year"),
                     rs.getDouble("Price"),
                     rs.getString("URL"),
-                    rs.getBlob("image").toString());
+                    rs.getString("image"));
             return title;
         }catch (SQLException e){
             logger.error("Retrieving title failed.", e);
@@ -98,7 +100,7 @@ public class TitleDAO extends DataAccessObject<Title>{
             statement.setInt(2, title.getYear());
             statement.setDouble(3, title.getPrice());
             statement.setString(4, title.getURL());
-            statement.setBlob(5, convertImageToBlob(title.getImage()));
+            statement.setString(5, title.getImage());
 
             statement.setInt(6, title.getId());
 
@@ -127,7 +129,7 @@ public class TitleDAO extends DataAccessObject<Title>{
 
     }
 
-    protected Blob convertImageToBlob(String imagePath){
+  /*  protected Blob convertImageToBlob(String imagePath){
         try{
             return (Blob) new FileInputStream(imagePath);
 
@@ -136,9 +138,9 @@ public class TitleDAO extends DataAccessObject<Title>{
             throw new RuntimeException("Converting image to Blob failed", e);
         }
 
-    }
+    }*/
 
-    protected void retrieveImage(int titleId, String outputPath) throws SQLException, IOException {
+  /*  protected void retrieveImage(int titleId, String outputPath) throws SQLException, IOException {
 
         Title title = getById(titleId);
         Blob blob = convertImageToBlob(title.getImage());
@@ -151,7 +153,7 @@ public class TitleDAO extends DataAccessObject<Title>{
                     outputStream.write(buffer, 0, bytesRead);
                 }
 
-    }
+    }*/
 
 }
 

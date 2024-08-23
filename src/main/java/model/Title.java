@@ -51,4 +51,16 @@ public class Title implements DataTransferObject {
     public int getId() {
         return this.titleId;
     }
+
+    @Override
+    public String toString() {
+        return "Title{" +
+                "titleId=" + titleId +
+                ", title='" + title + '\'' +
+                ", year=" + year +
+                ", price=" + price +
+                ", URL='" + URL + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

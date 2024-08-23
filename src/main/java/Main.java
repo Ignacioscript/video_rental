@@ -1,28 +1,29 @@
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import controller.CustomerController;
+import controller.TitleController;
+import model.Customer;
+import model.Title;
 
 public class Main {
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-   public  static Logger logger  = LoggerFactory.getLogger(Main.class);
-    static Integer t = 32;
-    static Integer oldT;
+    public static void main (String[] args){
 
-    public static void main(String[] args) {
+        TitleController titleController = new TitleController();
+      //TODO review this output: -> Cannot invoke "Object.toString()" because the return value of "java.sql.ResultSet.getBlob(String)" is null
 
-
-      Main.setTemperature(55);
+        Title title = titleController.getById(4);
+        System.out.println(title.toString());
 
 
-    }
+        //TODO add rs.next() to the Result sets methods
+        //TODO reiew the null pointException, consider removing the blop images to testing. DONE!
 
-    public static void setTemperature(Integer temperature){
-        oldT = t;
-        t = temperature;
-        logger.atDebug().log("Temperature set to {}. Old value was {}.", t, oldT);
-        if(temperature.intValue()>50){
-            logger.info("Temperature has risen above 50 degrees.");
-        }
+
+        CustomerController customerController = new CustomerController();
+       Customer customer =  customerController.getById(2);
+
+        System.out.println(customer.toString());
 
     }
+
 }
+

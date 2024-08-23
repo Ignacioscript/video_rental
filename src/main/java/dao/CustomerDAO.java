@@ -70,6 +70,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
+            rs.next();
             customer = new Customer(id, rs.getString("CustomerName"), rs.getString("CustomerAddress"), rs.getString("CustomerPhone"));
             logger.info("Getting one value-operarion Sucessfully ");
 
