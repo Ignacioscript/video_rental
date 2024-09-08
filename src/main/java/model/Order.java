@@ -2,6 +2,7 @@ package model;
 
 import interfaces.DataTransferObject;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Order implements DataTransferObject {
@@ -9,10 +10,10 @@ public class Order implements DataTransferObject {
     private int orderNumber;
     private Customer customer;
     private Tape tape;
-    private Date date;
+    private LocalDate date;
     private char status;
 
-    public Order(int orderNumber, Customer customer, Tape tape, Date date, char status) {
+    public Order(int orderNumber, Customer customer, Tape tape, LocalDate date, char status) {
         this.orderNumber = orderNumber;
         this.customer = customer;
         this.tape = tape;
@@ -45,11 +46,11 @@ public class Order implements DataTransferObject {
         this.tape = tape;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

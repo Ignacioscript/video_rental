@@ -44,4 +44,13 @@ public class Tape implements DataTransferObject {
     public int getId() {
         return this.tapeId;
     }
+
+    @Override
+    public String toString() {
+        return "Tape{" +
+                "tapeId=" + tapeId +
+                ", title=" + title +
+                ", type=" + type +
+                '}';
+    }
 }

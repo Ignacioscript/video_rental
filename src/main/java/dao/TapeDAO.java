@@ -76,6 +76,7 @@ public class TapeDAO extends DataAccessObject<Tape>{
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
+            rs.absolute(1);
 
             char type = rs.getString("type").charAt(0);
             int titleId = rs.getInt("TitleID");

@@ -77,7 +77,7 @@ public class TitleDAO extends DataAccessObject<Title>{
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
-            rs.next();
+            rs.absolute(1);
 
             title = new Title(
                     rs.getInt("TitleID"),

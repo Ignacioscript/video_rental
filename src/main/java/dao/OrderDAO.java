@@ -66,7 +66,7 @@ public class OrderDAO extends DataAccessObject<Order>{
                         rs.getInt("OrderNumber"),
                         customer,
                         tape,
-                        rs.getDate("DueDate"),
+                        rs.getDate("DueDate").toLocalDate(),
                         status
                         );
 
@@ -89,6 +89,7 @@ public class OrderDAO extends DataAccessObject<Order>{
         try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
+            rs.absolute(1);
 
             int customerId = rs.getInt("CustomerID");
             int tapeId = rs.getInt("TapeID");
@@ -101,7 +102,7 @@ public class OrderDAO extends DataAccessObject<Order>{
                     rs.getInt("OrderNumber"),
                     customer,
                     tape,
-                    rs.getDate("DueDate"),
+                    rs.getDate("DueDate").toLocalDate(),
                     status
             );
             logger.info("Order retrieved successfully");
