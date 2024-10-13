@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import util.DBUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,13 +26,14 @@ public class OrderDAO extends DataAccessObject<Order>{
 
     @Override
     public void create(Order order) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(INSERT)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(INSERT)){
             statement.setInt(1, order.getId());
             statement.setInt(2, order.getCustomer().getId());
             statement.setInt(3, order.getTape().getId());
             statement.setString(4, order.getDate().toString());
             statement.setString(5, String.valueOf(order.getStatus()));
-            statement.executeUpdate();
+            statement.execute();
             logger.info("Order created in database");
         }catch (SQLException e){
             logger.error("Failed to create order data in database");
@@ -46,7 +48,8 @@ public class OrderDAO extends DataAccessObject<Order>{
         Customer customer;
         Tape tape;
 
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ALL)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(GET_ALL)){
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()){
@@ -86,7 +89,8 @@ public class OrderDAO extends DataAccessObject<Order>{
     @Override
     public Order getById(int id) {
         Order order;
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             rs.absolute(1);
@@ -116,7 +120,8 @@ public class OrderDAO extends DataAccessObject<Order>{
 
     @Override
     public void update(Order order) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(UPDATE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE)){
             statement.setInt(1, order.getCustomer().getId());
             statement.setInt(2, order.getTape().getId());
             statement.setString(3, order.getDate().toString());
@@ -133,7 +138,8 @@ public class OrderDAO extends DataAccessObject<Order>{
 
     @Override
     public void deleteById(int id) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(DELETE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE)){
             statement.setInt(1, id);
             statement.execute();
             logger.info("Order data deleted successfully");

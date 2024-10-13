@@ -18,7 +18,7 @@ public class TapeService extends DataAccessObject<Tape> {
     @Override
     public void create(Tape tape) {
         try {
-            tapeDAO.update(tape);
+            tapeDAO.create(tape);
             logger.info("Creating Tape was success");
         }catch (Exception e){
             logger.error("Error creating Tape data: {}", e.getMessage());
@@ -68,5 +68,7 @@ public class TapeService extends DataAccessObject<Tape> {
             throw new RuntimeException("Failed deleting Tape by ID: ", e);
         }
     }
+
+
     }
 

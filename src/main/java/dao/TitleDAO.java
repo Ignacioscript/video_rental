@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.sql.Blob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +25,8 @@ public class TitleDAO extends DataAccessObject<Title>{
 
     @Override
     public void create(Title title) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(INSERT)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(INSERT)){
             statement.setInt(1, title.getId());
             statement.setString(2, title.getTitle());
             statement.setInt(3, title.getYear());
@@ -36,7 +34,7 @@ public class TitleDAO extends DataAccessObject<Title>{
             statement.setString(5, title.getURL());
             statement.setString(6, title.getImage());
 
-            statement.executeUpdate();
+            statement.execute();
             logger.info("Title created successfully");
 
         }catch (SQLException e){
@@ -50,7 +48,8 @@ public class TitleDAO extends DataAccessObject<Title>{
     public List<Title> getAll() {
         List<Title> titleList = new ArrayList<>();
         Title title;
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ALL)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(GET_ALL)){
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()){
@@ -74,7 +73,8 @@ public class TitleDAO extends DataAccessObject<Title>{
     @Override
     public Title getById(int id) {
         Title title;
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             rs.absolute(1);
@@ -95,7 +95,8 @@ public class TitleDAO extends DataAccessObject<Title>{
 
     @Override
     public void update(Title title) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(UPDATE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE)){
             statement.setString(1, title.getTitle());
             statement.setInt(2, title.getYear());
             statement.setDouble(3, title.getPrice());
@@ -117,10 +118,11 @@ public class TitleDAO extends DataAccessObject<Title>{
     @Override
     public void deleteById(int id) {
 
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(DELETE)){
+        try(Connection connection= DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE)){
             statement.setInt(1, id);
             statement.execute();
-            logger.info("Deleting a customer-Operarion Sucessfully ");
+            logger.info("Deleting a Title-Operarion Sucessfully ");
 
         }catch (SQLException e){
             logger.error("Operation failed: ", e);

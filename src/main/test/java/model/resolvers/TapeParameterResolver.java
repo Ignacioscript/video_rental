@@ -16,6 +16,6 @@ public class TapeParameterResolver implements ParameterResolver {
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         Title title = (Title) new TitleParameterResolver().resolveParameter(parameterContext, extensionContext);
-        return new Tape(1, title, 'A');
+        return new Tape(1, title, "VHS");
     }
 }

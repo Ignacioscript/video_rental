@@ -11,7 +11,7 @@ public class TapeController extends DataAccessObject<Tape> {
 
     private final TapeService tapeService;
 
-    private TapeController(){
+    public TapeController(){
         this.tapeService = new TapeService();
     }
 
@@ -73,4 +73,5 @@ public class TapeController extends DataAccessObject<Tape> {
         }
 
     }
+
 }

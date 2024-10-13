@@ -29,12 +29,12 @@ class TitleTest {
 
     @Test
     void getURL(Title title) {
-        assertEquals("No url", title.getURL());
+        assertEquals("no url", title.getURL());
     }
 
     @Test
     void getImage(Title title) {
-        assertEquals("No image", title.getImage());
+        assertEquals("no image", title.getImage());
     }
 
     @Test

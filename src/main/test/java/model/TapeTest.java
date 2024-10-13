@@ -15,7 +15,7 @@ class TapeTest {
 @BeforeEach
     public void setTape() {
     title = new Title(1, "Lord of the Rings", 2001, 10.5, "lotro.com", "images");
-    tape = new Tape(1, title, 'A');
+    tape = new Tape(1, title, "VHS");
 
     }
 

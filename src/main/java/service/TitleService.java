@@ -18,7 +18,7 @@ public class TitleService extends DataAccessObject<Title> {
     @Override
     public void create(Title title) {
         try {
-            titleDAO.update(title);
+            titleDAO.create(title);
             logger.info("Creating title was success");
         }catch (Exception e){
             logger.error("Error creating title data: {}", e.getMessage());

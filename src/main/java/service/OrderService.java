@@ -19,7 +19,7 @@ public class OrderService extends DataAccessObject<Order> {
     @Override
     public void create(Order order) {
         try {
-            orderDAO.update(order);
+            orderDAO.create(order);
             logger.info("Creating order was success");
         }catch (Exception e){
             logger.error("Error creating order data: {}", e.getMessage());

@@ -7,15 +7,23 @@ public class Tape implements DataTransferObject {
 
     private int tapeId;
     private Title title;
-    private char type;
+    private String type;
+    private int titleId;
 
-    public Tape(int tapeId, Title title, char type) {
+    public Tape(int tapeId, Title title, String type) {
         this.tapeId = tapeId;
         this.title = title;
         this.type = type;
+        this.titleId = title.getId();
     }
 
     public Tape() {
+    }
+
+    public Tape(int tapeId, int titleId, String type){
+        this.tapeId = tapeId;
+        this.titleId = titleId;
+        this.type = type;
     }
 
 
@@ -32,11 +40,11 @@ public class Tape implements DataTransferObject {
         this.title = title;
     }
 
-    public char getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(char type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -49,7 +57,7 @@ public class Tape implements DataTransferObject {
     public String toString() {
         return "Tape{" +
                 "tapeId=" + tapeId +
-                ", title=" + title +
+                ", titleID=" + titleId +
                 ", type=" + type +
                 '}';
     }

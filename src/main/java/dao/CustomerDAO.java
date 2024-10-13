@@ -4,6 +4,8 @@ import model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.DBUtil;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,13 +20,14 @@ public class CustomerDAO extends DataAccessObject<Customer> {
     private final String UPDATE = "UPDATE Customers SET CustomerName=?, CustomerAddress=?, CustomerPhone=? WHERE CustomerId=?";
     private final String DELETE = "DELETE FROM Customers WHERE CustomerId=?";
     private final String GET_ONE = "SELECT * FROM Customers WHERE CustomerId = ?";
-    private final String GET_ALL = "SELECT * FROM Customers";
+    private final String GET_ALL = "SELECT * FROM Customers LIMIT 20 OFFSET 0";
 
 
 
     @Override
     public void create(Customer customer) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(INSERT)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement =connection.prepareStatement(INSERT)){
             statement.setInt(1, customer.getId());
             statement.setString(2, customer.getCustomerName());
             statement.setString(3, customer.getCustomerAddress());
@@ -44,7 +47,8 @@ public class CustomerDAO extends DataAccessObject<Customer> {
         List<Customer> customerList = new ArrayList<>();
         Customer customer;
 
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ALL)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(GET_ALL)){
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 customer = new Customer(
@@ -67,7 +71,8 @@ public class CustomerDAO extends DataAccessObject<Customer> {
     @Override
     public Customer getById(int id) {
         Customer customer;
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(GET_ONE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(GET_ONE)){
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             rs.absolute(1);
@@ -84,7 +89,8 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
     @Override
     public void update(Customer customer) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(UPDATE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE)){
             statement.setString(1, customer.getCustomerName());
             statement.setString(2, customer.getCustomerAddress());
             statement.setString(3, customer.getCustomerPhone());
@@ -101,11 +107,11 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
     @Override
     public void deleteById(int id) {
-        try(PreparedStatement statement = DBUtil.getConnection().prepareStatement(DELETE)){
+        try(Connection connection = DBUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(DELETE)){
             statement.setInt(1, id);
             statement.execute();
             logger.info("Deleting a customer-Operarion Sucessfully ");
-
         }catch (SQLException e){
             logger.error("Operation failed: ", e);
             throw new RuntimeException("Operation failed", e);
