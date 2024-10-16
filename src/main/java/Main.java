@@ -18,30 +18,31 @@ public class Main {
 
     public static void main (String[] args){
 
+        Scanner scanner = new Scanner(System.in);
 
-//        OrderController orderController = new OrderController();
-        //Order order = orderController.getById(1);
-   //     orderController.deleteById(1);
+        while(true) {
+            System.out.println("1: Tape");
+            System.out.println("2: Orders");
+            System.out.println("3: Customers");
+            System.out.println("4: Titles");
+            System.out.println("5: Exit");
 
+            int number = scanner.nextInt();
+            scanner.nextLine();
 
-//        CustomerController customerController = new CustomerController();
-//
-//        Customer customer = new Customer(
-//          405, "Philip Pattek", "Paris AV", "(453) 664492");
-//
-//       // customerController.create(customer);
-//
-//        customerController.update(customer);
+            switch (number) {
 
-   //customerCRUD();
-//      tapeCRUD();
+                case 1: tapeCRUD(); break;
+                case 2: orderCRUD(); break;
+                case 3: customerCRUD(); break;
+                case 4: titleCRUD(); break;
+                case 5: System.exit(0); break;
+                default:
+                    System.out.println("Opcion no valida intente nuevamente");
 
-        orderCRUD();
+            }
 
-
-//        TapeDAO tapeDAO = new TapeDAO();
-//        tapeDAO.getAll().forEach(System.out::println);
-
+        }
 
     }
 
