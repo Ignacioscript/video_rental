@@ -22,7 +22,7 @@ public class OrderDAO extends DataAccessObject<Order>{
     private final String UPDATE = "UPDATE Orders SET CustomerID=?, TapeID=?, DueDate=?, Status=? WHERE OrderNumber=?";
     private final String DELETE = "DELETE FROM Orders WHERE OrderNumber=?";
     private final String GET_ONE = "SELECT * FROM Orders WHERE OrderNumber=?";
-    private final String GET_ALL = "SELECT * FROM Orders";
+    private final String GET_ALL = "SELECT * FROM Orders LIMIT 50 OFFSET 0";
 
     @Override
     public void create(Order order) {

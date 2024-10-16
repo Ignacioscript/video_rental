@@ -57,7 +57,7 @@ public class Tape implements DataTransferObject {
     public String toString() {
         return "Tape{" +
                 "tapeId=" + tapeId +
-                ", titleID=" + titleId +
+                ", titleID=" + title +
                 ", type=" + type +
                 '}';
     }
