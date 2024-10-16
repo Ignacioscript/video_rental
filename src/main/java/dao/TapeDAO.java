@@ -55,13 +55,12 @@ public class TapeDAO extends DataAccessObject<Tape>{
             while (rs.next()){
 
                 type = rs.getString("type");
-                int titleId = rs.getInt("TitleID");
-                titleID = titleId;
-                title = new TitleDAO().getById(titleId);
+                titleID = rs.getInt("TitleID");
+                title = new TitleDAO().getById(titleID);
 
                 tape = new Tape(
                         rs.getInt("TapeID"),
-                        titleID,
+                        title,
                         type);
                 tapeList.add(tape);
 

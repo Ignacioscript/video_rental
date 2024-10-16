@@ -1,3 +1,4 @@
+import config.DatabaseConfig;
 import controller.CustomerController;
 import controller.OrderController;
 import controller.TapeController;
@@ -7,9 +8,14 @@ import model.Customer;
 import model.Order;
 import model.Tape;
 import model.Title;
+import org.flywaydb.core.Flyway;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
@@ -17,34 +23,41 @@ public class Main {
 
 
     public static void main (String[] args){
-
         Scanner scanner = new Scanner(System.in);
 
-        while(true) {
-            System.out.println("1: Tape");
-            System.out.println("2: Orders");
-            System.out.println("3: Customers");
-            System.out.println("4: Titles");
-            System.out.println("5: Exit");
+   while(true) {
+       System.out.println("1: Tape");
+       System.out.println("2: Orders");
+       System.out.println("3: Customers");
+       System.out.println("4: Titles");
+       System.out.println("5: Exit");
 
-            int number = scanner.nextInt();
-            scanner.nextLine();
+       int number = scanner.nextInt();
+       scanner.nextLine();
 
-            switch (number) {
+       switch (number) {
 
-                case 1: tapeCRUD(); break;
-                case 2: orderCRUD(); break;
-                case 3: customerCRUD(); break;
-                case 4: titleCRUD(); break;
-                case 5: System.exit(0); break;
-                default:
-                    System.out.println("Opcion no valida intente nuevamente");
+           case 1: tapeCRUD(); break;
+           case 2: orderCRUD(); break;
+           case 3: customerCRUD(); break;
+           case 4: titleCRUD(); break;
+           case 5: System.exit(0); break;
+           default:
+               System.out.println("Opcion no valida intente nuevamente");
 
-            }
+       }
 
-        }
+   }
+
+
+
+
+
 
     }
+
+
+
 
     //CUSTOMER
     protected static void customerCRUD(){
@@ -91,7 +104,7 @@ public class Main {
                     System.out.println("Enter Customer ID");
                     int getCustomerId = scanner.nextInt();
                     scanner.nextLine();
-                    System.out.println( customerController.getById(getCustomerId));
+                    customerController.getById(getCustomerId);
                     break;
 
 
@@ -274,16 +287,57 @@ public class Main {
                      orderController.create(order);
                      break;
 
-                 case 2: break; //TODO
-                 case 3: break; //TODO
-                 case 4: break; //TODO
-                 case 5: break; //TODO
-                 case 6: break; //TODO
-                 default:
+                 case 2:
+                     System.out.println("Here are the list of Orders");
+                     orderController.getAll().forEach(System.out::println);
+                     break;
+                 case 3:
+                     System.out.println("Type Order's ID");
+                     int orderGetID = scanner.nextInt();
+                     scanner.nextLine();
+                     System.out.println(orderController.getById(orderGetID));
+                     break;
+                 case 4:
+                     System.out.println("Create Order ID");
+                     int orderIDupdate = scanner.nextInt();
+                     scanner.nextLine();
+
+                     System.out.println("Type Customer's ID");
+                     int customerIDupdate = scanner.nextInt();
+                     scanner.nextLine();
+
+                     System.out.println("Type Tape's ID");
+                     int tapeIDupdate = scanner.nextInt();;
+                     scanner.nextLine();
+
+                     System.out.println("Type Date  (yyyy-mm-dd) format");
+                     String orderDateStringUpdate = scanner.nextLine();
+                     LocalDate orderDateUpdate = LocalDate.parse(orderDateStringUpdate, DateTimeFormatter.ISO_LOCAL_DATE);
+
+                     System.out.println("Type the status");
+                     String orderStatusStringUpdate = scanner.nextLine();
+                     char orderStatusUpdate = orderStatusStringUpdate.charAt(0);
+
+                     Customer customerUpdate = customerController.getById(customerIDupdate);
+                     Tape tapeUpdate = tapeController.getById(tapeIDupdate);
+                     Order orderUpdate = new Order(orderIDupdate, customerUpdate, tapeUpdate, orderDateUpdate, orderStatusUpdate);
+                     orderController.update(orderUpdate);
+                     break;
+                 case 5:
+                     System.out.println("Type Order's ID to Delete");
+                     int orderIDtoDelete = scanner.nextInt();
+                     scanner.nextLine();
+                     orderController.deleteById(orderIDtoDelete);
+                     break;
+                 case 6:
+                     System.exit(0);
+                     break;
+                 default: System.out.println("Invalid choice. Please try again");
+
              }
          }
 
-    } //TODO create logic
+    }
 
 
 

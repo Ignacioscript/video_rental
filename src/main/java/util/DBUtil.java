@@ -6,11 +6,13 @@ import config.DatabaseConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class DBUtil {
+
 
 //    private static final HikariConfig config = new HikariConfig();
 //    private static final HikariDataSource ds;
@@ -36,7 +38,7 @@ public class DBUtil {
 //}
     public static Connection getConnection(){
         try{
-
+           // DatabaseConfig.createDatabaseIfNotExists();
            return DriverManager.getConnection(URL, USER, PASSWORD);  //TODO reiew how different work Driver Manager and Hiraki go to NOTION and restore de Driver Manager code
            //return ds.getConnection();
         }catch (SQLException e){
