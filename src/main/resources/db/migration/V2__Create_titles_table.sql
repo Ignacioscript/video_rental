@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS Titles (
-                                      TitleID INT(11) PRIMARY KEY,
-    Title VARCHAR(50) DEFAULT NULL,
-    Year INT(11) DEFAULT NULL,
-    Price FLOAT DEFAULT NULL,
-    URL VARCHAR(50) DEFAULT NULL,
-    Image BLOB DEFAULT NULL
-    );

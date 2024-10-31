@@ -6,10 +6,6 @@ import config.DatabaseConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 public class DBUtil {
 
@@ -17,13 +13,13 @@ public class DBUtil {
 //    private static final HikariConfig config = new HikariConfig();
 //    private static final HikariDataSource ds;
 
-  private static final String URL = DatabaseConfig.getProperty("db.url");
-  private static final String USER = DatabaseConfig.getProperty("db.user");
-  private static final String PASSWORD = DatabaseConfig.getProperty("db.password");
-  private static final String CACHE_PREP = DatabaseConfig.getProperty("dataSource.cachePrepStmts");
-  private static final String CACHE_STMT_SIZE = DatabaseConfig.getProperty("dataSource.prepStmtCacheSize");
-  private static final String CACHE_STMT_SQL_LIMIT = DatabaseConfig.getProperty("dataSource.prepStmtCacheSqlLimit");
-  private static final String POOL_SIZE = DatabaseConfig.getProperty("maximumPoolSize");
+//  private static final String URL = DatabaseConfig.getProperty("db.url");
+//  private static final String USER = DatabaseConfig.getProperty("db.user");
+//  private static final String PASSWORD = DatabaseConfig.getProperty("db.password");
+//  private static final String CACHE_PREP = DatabaseConfig.getProperty("dataSource.cachePrepStmts");
+//  private static final String CACHE_STMT_SIZE = DatabaseConfig.getProperty("dataSource.prepStmtCacheSize");
+//  private static final String CACHE_STMT_SQL_LIMIT = DatabaseConfig.getProperty("dataSource.prepStmtCacheSqlLimit");
+//  private static final String POOL_SIZE = DatabaseConfig.getProperty("maximumPoolSize");
 
 //    static {
 //        config.setJdbcUrl(URL);
@@ -36,12 +32,27 @@ public class DBUtil {
 //
 //        ds =new HikariDataSource(config);
 //}
-    public static Connection getConnection(){
-        try{
-           // DatabaseConfig.createDatabaseIfNotExists();
-           return DriverManager.getConnection(URL, USER, PASSWORD);  //TODO reiew how different work Driver Manager and Hiraki go to NOTION and restore de Driver Manager code
-           //return ds.getConnection();
-        }catch (SQLException e){
+//    public static Connection getConnection(){
+//        try{
+//           // DatabaseConfig.createDatabaseIfNotExists();
+//           return DriverManager.getConnection(URL, USER, PASSWORD);  //TODO reiew how different work Driver Manager and Hiraki go to NOTION and restore de Driver Manager code
+//           //return ds.getConnection();
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//            throw new RuntimeException("Operation Failed", e);
+//        }
+//    }
+
+
+
+    private static final String URL = DatabaseConfig.getDbUrl();
+    private static final String USER = DatabaseConfig.getDbUser();
+    private static final String PASSWORD = DatabaseConfig.getDbPassword();
+
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Operation Failed", e);
         }
