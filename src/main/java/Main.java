@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -79,10 +80,17 @@ public class Main {
 
             switch (choice){
                 case 1:
-                    System.out.println("Enter customer ID");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
-
+                    int id = -1;
+                    while (id < 0) {
+                        System.out.println("Enter customer ID");
+                        try {
+                            id = scanner.nextInt();
+                            scanner.nextLine(); // consume newline
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a valid integer for customer ID.");
+                            scanner.nextLine(); // clear the invalid input
+                        }
+                    }
                     System.out.println("Enter customer full name");
                     String customerName = scanner.nextLine();
 
@@ -110,9 +118,17 @@ public class Main {
 
 
                 case 4:
-                    System.out.println("Enter customer ID");
-                    int customerId = scanner.nextInt();
-                    scanner.nextLine();
+                    int customerId = -1;
+                    while (customerId < 0) {
+                        System.out.println("Enter customer ID");
+                        try {
+                            customerId = scanner.nextInt();
+                            scanner.nextLine(); // consume newline
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a valid integer for customer ID.");
+                            scanner.nextLine(); // clear the invalid input
+                        }
+                    }
 
                     System.out.println("Enter customer full name");
                     String updateName = scanner.nextLine();
