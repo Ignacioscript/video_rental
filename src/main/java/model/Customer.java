@@ -4,6 +4,7 @@ import interfaces.DataTransferObject;
 
 public class Customer implements DataTransferObject {
 
+    @Id
     private int customerID;
     private String customerName;
     private String customerAddress;

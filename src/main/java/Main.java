@@ -1,22 +1,15 @@
-import config.DatabaseConfig;
 import controller.CustomerController;
 import controller.OrderController;
 import controller.TapeController;
 import controller.TitleController;
-import dao.TapeDAO;
 import model.Customer;
 import model.Order;
 import model.Tape;
 import model.Title;
-import org.flywaydb.core.Flyway;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
-import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {

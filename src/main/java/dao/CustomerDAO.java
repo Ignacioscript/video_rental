@@ -35,7 +35,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
             statement.setString(4, customer.getCustomerPhone());
             statement.execute();
 
-            logger.info("Operarion Sucessfully ");
+            logger.info("Operation Successfully ");
 
         }catch (SQLException e){
             logger.error("Operation failed: ", e);
@@ -46,7 +46,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
     @Override
     public List<Customer> getAll() {
         List<Customer> customerList = new ArrayList<>();
-        logger.debug("Retrievieng all customers");
+        logger.debug("Retrieving all customers");
         Customer customer;
 
         try(Connection connection = DBUtil.getConnection();
@@ -81,7 +81,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
             ResultSet rs = statement.executeQuery();
             rs.absolute(1);
             customer = new Customer(id, rs.getString("CustomerName"), rs.getString("CustomerAddress"), rs.getString("CustomerPhone"));
-            logger.info("Getting one value-operarion Sucessfully ");
+            logger.info("Getting one value-operation Successfully ");
             logger.debug("Retrieved customer: {}", customer);
 
         }catch (SQLException e){
@@ -103,7 +103,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
             statement.setInt(4, customer.getId());
             statement.executeUpdate();
-            logger.info("Updating a customer-Operarion Sucessfully ");
+            logger.info("Updating a customer-Operation Successfully ");
 
         }catch(SQLException e){
             logger.error("Operation failed: ", e);
@@ -118,7 +118,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
                 PreparedStatement statement = connection.prepareStatement(DELETE)){
             statement.setInt(1, id);
             statement.execute();
-            logger.info("Deleting a customer-Operarion Sucessfully ");
+            logger.info("Deleting a customer-Operation Successfully ");
         }catch (SQLException e){
             logger.error("Operation failed: ", e);
             throw new RuntimeException("Operation failed", e);
