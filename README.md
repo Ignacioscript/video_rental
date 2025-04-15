@@ -4,37 +4,41 @@ A Java-based application inspired by classic video rental systems (like Blockbus
 
 ## 📌 Project Overview
 
-This app simulates a retro video rental system, applying OOP, MVC, and database interaction through SQL. It is divided into multiple branches, each representing a milestone in the development journey.
+This app simulates a retro video rental store, applying Object-Oriented Programming (OOP), the MVC pattern, and relational database management. Each branch represents a different milestone in the development process, showcasing the evolution of both technical depth and architecture.
 
 ---
 
 ## 🚀 Project Versions (by Branch)
 
-| Branch              | Description |
-|---------------------|-------------|
-| `main`              | Basic version using Java and JDBC. Implements MVC, SQL database integration, and environment variable validation. |
-| `spring-jdbc`       | Refactored version using Spring Framework for better structure and dependency management. |
-| `raw-jdbc`          | Focused on externalizing configuration via `.env` file and Java environment management. |
-| `docker-integration`| Adds Docker support for containerized development and deployment. |
-| `develop`           | Active development branch — work in progress with planned features and refactoring. |
+| Branch               | Description |
+|----------------------|-------------|
+| `main`               | Basic version using Java and JDBC. Implements MVC pattern, SQL database integration, and simple input validation. |
+| `spring-jdbc`        | Refactored to use Spring Framework and JDBC Template. Improved modularity, structure, and maintainability. |
+| `raw-jdbc`           | Highlights raw JDBC implementation with improved environment configuration using `.env` files and manual connection handling. Designed to separate concerns and simulate production-like setups. |
+| `docker-integration` | Adds Docker support for containerized development and deployment. Prepares the app for scalable infrastructure. |
+| `develop`            | Active development branch with ongoing improvements, testing, and upcoming features like REST API and microservices. |
 
----
 
 ## 🔧 Tech Stack
 
 - Java
 - JDBC / Spring JDBC
 - SQL Database
-- .env config management
-- Docker (in progress)
+- dotenv Java libraries for config
+- Docker (WIP)
 
 ---
 
 ## 📦 How to Run
 
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/Ignacioscript/video-rental.git
 
-# Checkout desired version
+# Navigate to the project directory
+cd video-rental
+
+# Checkout the desired version/branch
 git checkout spring-jdbc
+
+# Follow specific README instructions within the branch (if available)
