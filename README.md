@@ -34,7 +34,7 @@ This app simulates a retro video rental system, applying OOP, MVC, and database 
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/video-rental.git
+git clone https://github.com/Ignacioscript/video-rental.git
 
 # Checkout desired version
 git checkout spring-jdbc
