@@ -14,7 +14,7 @@ This app simulates a retro video rental system, applying OOP, MVC, and database 
 |---------------------|-------------|
 | `main`              | Basic version using Java and JDBC. Implements MVC, SQL database integration, and environment variable validation. |
 | `spring-jdbc`       | Refactored version using Spring Framework for better structure and dependency management. |
-| `env-vars`          | Focused on externalizing configuration via `.env` file and Java environment management. |
+| `raw-jdbc`          | Focused on externalizing configuration via `.env` file and Java environment management. |
 | `docker-integration`| Adds Docker support for containerized development and deployment. |
 | `develop`           | Active development branch — work in progress with planned features and refactoring. |
 
