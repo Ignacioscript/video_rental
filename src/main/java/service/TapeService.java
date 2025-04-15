@@ -3,72 +3,46 @@ package service;
 import dao.DataAccessObject;
 import dao.TapeDAO;
 import model.Tape;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TapeService extends DataAccessObject<Tape> {
 
 
     private final TapeDAO tapeDAO;
 
-    public TapeService(){
-        this.tapeDAO = new TapeDAO();
+    public TapeService(JdbcTemplate jdbcTemplate, TapeDAO tapeDAO) {
+        super(jdbcTemplate);
+        this.tapeDAO = tapeDAO;
     }
+
 
     @Override
     public void create(Tape tape) {
-        try {
-            tapeDAO.create(tape);
-            logger.info("Creating Tape was success");
-        }catch (Exception e){
-            logger.error("Error creating Tape data: {}", e.getMessage());
-            throw new RuntimeException("Failed creating Tape data: ", e);
-        }
+        tapeDAO.create(tape);
     }
 
     @Override
     public List<Tape> getAll() {
-        try {
-            return tapeDAO.getAll();
-
-        }catch (Exception e){
-            logger.error("Error retrieving Tape list data: {}", e.getMessage());
-            throw new RuntimeException("Failed retrieving Tape list data: ", e);
-        }
+        return tapeDAO.getAll();
     }
 
     @Override
     public Tape getById(int id) {
-        try {
-            return tapeDAO.getById(id);
-        }catch (Exception e){
-            logger.error("Error retrieving Tape by ID: {}", e.getMessage());
-            throw new RuntimeException("Failed retrieving Tape by ID: ", e);
-        }
+        return tapeDAO.getById(id);
     }
 
     @Override
-    public void update(Tape tape) {
-        try {
-            tapeDAO.update(tape);
-            logger.info("Updating Tape was success");
-        }catch (Exception e){
-            logger.error("Error updating Tape data: {}", e.getMessage());
-            throw new RuntimeException("Failed updating Tape data: ", e);
-        }
+    public void update(Tape tape, int id) {
+        tapeDAO.update(tape, id);
     }
 
     @Override
     public void deleteById(int id) {
-        try {
-            tapeDAO.deleteById(id);
-            logger.info("Deleting Tape by ID was a success");
-        }catch (Exception e){
-            logger.error("Error deleting Tape by ID: {}", e.getMessage());
-            throw new RuntimeException("Failed deleting Tape by ID: ", e);
-        }
+        tapeDAO.deleteById(id);
     }
-
-
-    }
+}
 

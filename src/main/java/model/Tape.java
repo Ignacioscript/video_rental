@@ -1,7 +1,10 @@
 package model;
 
 import interfaces.DataTransferObject;
+import org.springframework.stereotype.Repository;
+import util.ConsoleColor;
 
+@Repository
 public class Tape implements DataTransferObject {
 
 
@@ -55,10 +58,10 @@ public class Tape implements DataTransferObject {
 
     @Override
     public String toString() {
-        return "Tape{" +
-                "tapeId=" + tapeId +
-                ", titleID=" + title +
-                ", type=" + type +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        return sb.append("ID: ").append(getId())
+                .append(ConsoleColor.GREEN_BOLD)
+                .append("TITLE: ").append(getTitle().toString())
+                .append("TYPE: ").append(getType()).toString();
     }
 }

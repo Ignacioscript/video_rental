@@ -4,75 +4,47 @@ package controller;
 
 import dao.DataAccessObject;
 import model.Customer;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
 import service.CustomerService;
 
 import java.sql.SQLException;
 import java.util.List;
 
+@Controller
 public class CustomerController extends DataAccessObject<Customer> {
-
 
 
     private final CustomerService customerService;
 
-    public CustomerController(){
-        this.customerService = new CustomerService();
+    public CustomerController(JdbcTemplate jdbcTemplate, CustomerService customerService) {
+        super(jdbcTemplate);
+        this.customerService = customerService;
     }
-
 
     @Override
     public void create(Customer customer) {
-        try {
-            customerService.create(customer);
-            logger.info("Customer created successfully");
-        }catch (Exception e){
-            logger.error("Error creating customer {}: ",  e.getMessage());
-            throw new RuntimeException();
-        }
-
+        customerService.create(customer);
     }
 
     @Override
     public List<Customer> getAll() {
-
-        try {
-            return customerService.getAll();
-        }catch (Exception e){
-            logger.error("Error retrieving customers: {}", e.getMessage());
-                throw new RuntimeException("Failed to retrieve customers", e);
-        }
+        return customerService.getAll();
     }
 
     @Override
     public Customer getById(int id) {
-        try {
-            return customerService.getById(id);
-        }catch (Exception e){
-            logger.error("Error retrieving customer by ID: {}", e.getMessage());
-            throw new RuntimeException("Failed to retrieve customer");
-        }
-
+        return customerService.getById(id);
     }
 
     @Override
-    public void update(Customer customer) {
-        try {
-            customerService.update(customer);
-            logger.info("Updating customer was a success");
-        }catch (Exception e){
-            logger.error("Error updating customer {}", e.getMessage());
-            throw new RuntimeException("Failed to update customer", e);
-        }
+    public void update(Customer customer, int id) {
+        customerService.update(customer, id);
     }
 
     @Override
     public void deleteById(int id) {
-        try {
-            customerService.deleteById(id);
-            logger.info("Customer deleted successfully");
-        }catch (Exception e){
-            logger.error("Error deleting a customer {}: ", e.getMessage());
-            throw  new RuntimeException("Failed deleting a customer", e);
-        }
+        customerService.deleteById(id);
+
     }
 }

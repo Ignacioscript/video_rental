@@ -1,9 +1,12 @@
 package model;
 
 import interfaces.DataTransferObject;
+import org.springframework.stereotype.Repository;
+import util.ConsoleColor;
 
 import java.time.LocalDate;
 import java.util.Date;
+
 
 public class Order implements DataTransferObject {
 
@@ -69,13 +72,14 @@ public class Order implements DataTransferObject {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderNumber=" + orderNumber +
-                ", customer=" + customer +
-                ", tape=" + tape +
-                ", date=" + date +
-                ", status=" + status +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        return sb.append("Order -> ")
+                .append(ConsoleColor.YELLOW_BACKGROUND)
+                .append("ORDER ID: ").append(getId())
+                .append("CUSTOMER: ").append(getCustomer().toString())
+                .append("TAPE: ").append(getTape().toString())
+                .append("DATE: ").append(getDate().toString())
+                .append("STATUS: ").append(getStatus()).toString();
     }
 }
 

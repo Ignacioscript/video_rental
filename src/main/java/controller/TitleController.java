@@ -2,75 +2,45 @@ package controller;
 
 import dao.DataAccessObject;
 import model.Title;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
 import service.TitleService;
 
 import java.util.List;
 
+@Controller
 public class TitleController extends DataAccessObject<Title> {
 
 
     private final TitleService titleService;
 
-    public TitleController(){
-        this.titleService = new TitleService();
+    public TitleController(JdbcTemplate jdbcTemplate, TitleService titleService) {
+        super(jdbcTemplate);
+        this.titleService = titleService;
     }
-
 
     @Override
     public void create(Title title) {
-        try{
-            titleService.create(title);
-            logger.info("Title created successfully");
-
-        }catch (Exception e){
-            logger.error("Error creating Title: {}", e.getMessage());
-            throw new RuntimeException("Failed creating Title: ", e);
-        }
-
+        titleService.create(title);
     }
 
     @Override
     public List<Title> getAll() {
-        try{
-            return titleService.getAll();
-        }catch (Exception e){
-            logger.error("Error retrieving Title list: {}", e.getMessage());
-            throw new RuntimeException("Failed retrieving Title list", e);
-        }
-
+        return titleService.getAll();
     }
 
     @Override
     public Title getById(int id) {
-        try{
-            return titleService.getById(id);
-        }catch (Exception e){
-            logger.error("Error retrieving Title by ID: {} ", e.getMessage());
-            throw new RuntimeException("Failed retrieving Title by ID", e);
-        }
+        return titleService.getById(id);
     }
 
     @Override
-    public void update(Title title) {
-        try{
-            titleService.update(title);
-            logger.info("Updating title data success");
-        }catch (Exception e){
-            logger.error("Error updating title data: {}", e.getMessage());
-            throw new RuntimeException("Failed updating title data: ", e);
-        }
-
+    public void update(Title title, int id) {
+        titleService.update(title, id);
     }
 
     @Override
     public void deleteById(int id) {
-        try{
-            titleService.deleteById(id);
-            logger.info("Deleting title by ID success");
-        }catch (Exception e){
-            logger.error("Error deleting Title by ID: {}", e.getMessage());
-            throw new RuntimeException("Failed deleting Title by ID:", e);
-        }
-
+        titleService.deleteById(id);
     }
 }

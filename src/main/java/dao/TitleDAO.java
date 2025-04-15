@@ -1,162 +1,84 @@
 package dao;
 
 import model.Title;
-import util.DBUtil;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.io.*;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TitleDAO extends DataAccessObject<Title>{
 
 
     private static final Logger logger = LoggerFactory.getLogger(TitleDAO.class);
 
-    private final String INSERT = "Insert into Titles Values (?,?,?,?,?,?)";
-    private final String UPDATE = "UPDATE Titles SET Title=?, Year=?, Price=?, URL=?, image=? WHERE TitleID = ? ";
+    private final String INSERT = "Insert into Titles(TitleID, Title, Year, Price, URL, Image) Values (?,?,?,?,?,?)";
+    private final String UPDATE = "UPDATE Titles SET Title=?, Year=?, Price=?, URL=?, Image=? WHERE TitleID = ? ";
     private final String DELETE = "DELETE from Titles WHERE TitleID = ?";
     private final String GET_ONE = "SELECT * FROM Titles WHERE TitleID = ?";
     private final String GET_ALL = "SELECT * FROM Titles";
 
+    public TitleDAO(JdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate);
+    }
+
 
     @Override
     public void create(Title title) {
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(INSERT)){
-            statement.setInt(1, title.getId());
-            statement.setString(2, title.getTitle());
-            statement.setInt(3, title.getYear());
-            statement.setDouble(4, title.getPrice());
-            statement.setString(5, title.getURL());
-            statement.setString(6, title.getImage());
-
-            statement.execute();
-            logger.info("Title created successfully");
-
-        }catch (SQLException e){
-            logger.error("Title creation failed", e);
-            throw new RuntimeException();
-        }
-
+        jdbcTemplate.update(INSERT,
+                title.getId(),
+                title.getTitle(),
+                title.getYear(),
+                title.getPrice(),
+                title.getURL(),
+                title.getImage()
+                );
     }
 
     @Override
     public List<Title> getAll() {
-        List<Title> titleList = new ArrayList<>();
-        Title title;
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ALL)){
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()){
-                title = new Title(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getInt(3),
-                        rs.getDouble(4),
-                        rs.getString(5),
-                        rs.getString(6));
-                titleList.add(title);
-            }
-            logger.info("Retrieving All data from table success");
-
-        }catch (SQLException e){
-            logger.error("Operation failed");
-        }
-        return titleList.stream().toList();
+        return jdbcTemplate.query(GET_ALL, titleRowMapper());
     }
 
     @Override
     public Title getById(int id) {
-        Title title;
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ONE)){
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            rs.absolute(1);
-
-            title = new Title(
-                    rs.getInt("TitleID"),
-                    rs.getString("Title"),
-                    rs.getInt("Year"),
-                    rs.getDouble("Price"),
-                    rs.getString("URL"),
-                    rs.getString("image"));
-            return title;
-        }catch (SQLException e){
-            logger.error("Retrieving title failed.", e);
-            throw new RuntimeException("Retrieving title failed", e);
-        }
+        return jdbcTemplate.queryForObject(GET_ONE, new Object[]{id}, titleRowMapper());
     }
 
     @Override
-    public void update(Title title) {
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(UPDATE)){
-            statement.setString(1, title.getTitle());
-            statement.setInt(2, title.getYear());
-            statement.setDouble(3, title.getPrice());
-            statement.setString(4, title.getURL());
-            statement.setString(5, title.getImage());
-
-            statement.setInt(6, title.getId());
-
-            statement.executeUpdate();
-            logger.info("Updating title successfully");
-
-        }catch (SQLException e){
-            logger.error("Updating title failed", e);
-            throw new RuntimeException();
-        }
-
+    public void update(Title title, int id) {
+        jdbcTemplate.update(UPDATE,
+                title.getId(),
+                title.getTitle(),
+                title.getYear(),
+                title.getImage(),
+                title.getURL(),
+                title.getImage(),
+                id
+                );
     }
 
     @Override
     public void deleteById(int id) {
-
-        try(Connection connection= DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(DELETE)){
-            statement.setInt(1, id);
-            statement.execute();
-            logger.info("Deleting a Title-Operarion Sucessfully ");
-
-        }catch (SQLException e){
-            logger.error("Operation failed: ", e);
-            throw new RuntimeException("Operation failed", e);
-        }
+        jdbcTemplate.update(DELETE, id);
 
     }
 
-  /*  protected Blob convertImageToBlob(String imagePath){
-        try{
-            return (Blob) new FileInputStream(imagePath);
+    public RowMapper<Title> titleRowMapper(){
+        return (rs, rowNum) -> new Title(
+                rs.getInt("TitleID"),
+                rs.getString("Title"),
+                rs.getInt("Year"),
+                rs.getDouble("Price"),
+                rs.getString("URL"),
+                rs.getString("Image")
 
-        }catch (IOException e){
-            logger.error("Converting image failed");
-            throw new RuntimeException("Converting image to Blob failed", e);
-        }
-
-    }*/
-
-  /*  protected void retrieveImage(int titleId, String outputPath) throws SQLException, IOException {
-
-        Title title = getById(titleId);
-        Blob blob = convertImageToBlob(title.getImage());
-        InputStream inputStream = blob.getBinaryStream();
-                FileOutputStream outputStream = new FileOutputStream(outputPath);
-                byte[] buffer = new byte[1024];
-                int bytesRead = -1;
-
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-
-    }*/
-
+        );
+    }
 }
 
 

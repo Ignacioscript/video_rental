@@ -5,149 +5,93 @@ import model.Order;
 import model.Tape;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import util.DBUtil;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class OrderDAO extends DataAccessObject<Order>{
+
+
+    private final CustomerDAO customerDAO;
+    private final TapeDAO tapeDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(OrderDAO.class);
 
-    private final String INSERT = "INSERT INTO Orders VALUES(?,?,?,?,?)";
+    private final String INSERT = "INSERT INTO Orders(OrderNumber, CustomerID, TapeID, DueDate, Status) VALUES(?,?,?,?,?)";
     private final String UPDATE = "UPDATE Orders SET CustomerID=?, TapeID=?, DueDate=?, Status=? WHERE OrderNumber=?";
     private final String DELETE = "DELETE FROM Orders WHERE OrderNumber=?";
     private final String GET_ONE = "SELECT * FROM Orders WHERE OrderNumber=?";
     private final String GET_ALL = "SELECT * FROM Orders LIMIT 50 OFFSET 0";
 
+
+
+    public OrderDAO(JdbcTemplate jdbcTemplate, CustomerDAO customerDAO, TapeDAO tapeDAO) {
+        super(jdbcTemplate);
+        this.customerDAO = customerDAO;
+        this.tapeDAO = tapeDAO;
+    }
+
+
     @Override
     public void create(Order order) {
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(INSERT)){
-            statement.setInt(1, order.getId());
-            statement.setInt(2, order.getCustomer().getId());
-            statement.setInt(3, order.getTape().getId());
-            statement.setString(4, order.getDate().toString());
-            statement.setString(5, String.valueOf(order.getStatus()));
-            statement.execute();
-            logger.info("Order created in database");
-        }catch (SQLException e){
-            logger.error("Failed to create order data in database");
-            throw new RuntimeException();
-        }
+        jdbcTemplate.update(INSERT,
+                order.getId(),
+                order.getCustomer().getId(),
+                order.getTape().getId(),
+                order.getDate(),
+                order.getStatus()
+                );
+
     }
 
     @Override
     public List<Order> getAll() {
-        List<Order> orderList =new ArrayList<>();
-        Order order;
-        Customer customer;
-        Tape tape;
-
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ALL)){
-            ResultSet rs = statement.executeQuery();
-
-            while(rs.next()){
-
-                //retrieving db columns' int values
-                int customerId = rs.getInt("CustomerID");
-                int tapeId = rs.getInt("TapeID");
-
-                // - creating objects and using method getById to initialize them
-                // - - int values previous obtained from db
-                customer = new CustomerDAO().getById(customerId);
-                tape = new TapeDAO().getById(tapeId);
-                char status = rs.getString("Status").charAt(0);
-
-                //passing the argments to create a new Order Object
-                order = new Order(
-                        rs.getInt("OrderNumber"),
-                        customer,
-                        tape,
-                        rs.getDate("DueDate").toLocalDate(),
-                        status
-                        );
-
-                //Adding the new Order Object to a order list
-                orderList.add(order);
-            }
-            logger.info("Retrieving order list was a success");
-
-        }catch (SQLException e){
-            logger.error("Error retrieving order list");
-            throw new RuntimeException();
-        }
-
-        return orderList;
+        return jdbcTemplate.query(GET_ALL,  orderRowMapper());
     }
 
     @Override
     public Order getById(int id) {
-        Order order;
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ONE)){
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            rs.absolute(1);
-
-            int customerId = rs.getInt("CustomerID");
-            int tapeId = rs.getInt("TapeID");
-            char status = rs.getString("Status").charAt(0);
-
-            Customer customer = new CustomerDAO().getById(customerId);
-            Tape tape = new TapeDAO().getById(tapeId);
-
-            order = new Order(
-                    rs.getInt("OrderNumber"),
-                    customer,
-                    tape,
-                    rs.getDate("DueDate").toLocalDate(),
-                    status
-            );
-            logger.info("Order retrieved successfully");
-
-        }catch (SQLException e){
-            logger.error("Retrieving Order by ID failed");
-            throw new RuntimeException();
-        }
-        return order;
+        return jdbcTemplate.queryForObject(GET_ONE, new Object[]{id}, orderRowMapper());
     }
 
     @Override
-    public void update(Order order) {
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(UPDATE)){
-            statement.setInt(1, order.getCustomer().getId());
-            statement.setInt(2, order.getTape().getId());
-            statement.setString(3, order.getDate().toString());
-            statement.setString(4, String.valueOf(order.getStatus()));
-            statement.setInt(5, order.getId());
-            statement.executeUpdate();
-
-            logger.info("Order data  was updated ");
-
-        }catch (SQLException e){
-            logger.error("Error on Updating Order data ");
-        }
+    public void update(Order order, int id) {
+        jdbcTemplate.update(UPDATE,
+                order.getId(),
+                order.getCustomer().getId(),
+                order.getTape().getId(),
+                order.getDate(),
+                order.getStatus(),
+                id
+        );
     }
 
     @Override
     public void deleteById(int id) {
-        try(Connection connection = DBUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(DELETE)){
-            statement.setInt(1, id);
-            statement.execute();
-            logger.info("Order data deleted successfully");
-        }catch (SQLException e){
-            logger.error("Error Deleting order data");
-            throw new RuntimeException();
-        }
+        jdbcTemplate.update(DELETE, id);
     }
 
-
+    public RowMapper<Order> orderRowMapper(){
+        return (rs, rowNum) -> {
+            Customer customer;
+            Tape tape;
+            try{
+                customer = customerDAO.getById(rs.getInt("CustomerId"));
+                tape = tapeDAO.getById(rs.getInt("TapeID"));
+            }catch (Exception e){
+                e.printStackTrace();
+                throw new RuntimeException("Error fetching Customer or Tape");
+            }
+            return new Order(
+                    rs.getInt("OrderNumber"),
+                    customer,
+                    tape,
+                    rs.getDate("DueDate").toLocalDate(),
+                    rs.getString("Status").charAt(0)
+            );
+        };
+    }
 }

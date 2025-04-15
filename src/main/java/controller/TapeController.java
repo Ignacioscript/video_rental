@@ -2,76 +2,46 @@ package controller;
 
 import dao.DataAccessObject;
 import model.Tape;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
 import service.TapeService;
 
 import java.util.List;
 
+@Controller
 public class TapeController extends DataAccessObject<Tape> {
 
 
     private final TapeService tapeService;
 
-    public TapeController(){
-        this.tapeService = new TapeService();
+    public TapeController(JdbcTemplate jdbcTemplate, TapeService tapeService) {
+        super(jdbcTemplate);
+        this.tapeService = tapeService;
     }
+
 
     @Override
     public void create(Tape tape) {
-        try{
-            tapeService.create(tape);
-            logger.info("Tape data was created successfully");
-        }catch (Exception e){
-            logger.error("Error creating Tape data: {}", e.getMessage());
-            throw new RuntimeException("Failed creating Tape data: ", e);
-        }
-
-
+        tapeService.create(tape);
     }
 
     @Override
     public List<Tape> getAll() {
-        try{
-            return tapeService.getAll();
-        }catch (Exception e){
-            logger.error("Error retrieving Tape list: {}", e.getMessage());
-            throw new RuntimeException("Failed retrieving Tape list: ", e);
-        }
-
+        return tapeService.getAll();
     }
 
     @Override
     public Tape getById(int id) {
-        try{
-            return tapeService.getById(id);
-        }catch (Exception e){
-            logger.error("Error retrieving Tape: {}", e.getMessage());
-            throw new RuntimeException("Failed retrieving Tape:", e);
-        }
-
+        return tapeService.getById(id);
     }
 
     @Override
-    public void update(Tape tape) {
-        try{
-            tapeService.update(tape);
-            logger.info("Tape updated succesfully");
-        }catch (Exception e){
-            logger.error("Error updating Tape data: {}", e.getMessage());
-            throw new RuntimeException("Failed updating Tape data: ", e);
-        }
-
+    public void update(Tape tape, int id) {
+        tapeService.update(tape, id);
     }
 
     @Override
     public void deleteById(int id) {
-        try{
-            tapeService.deleteById(id);
-            logger.info("Deleting Tape data success");
-        }catch (Exception e){
-            logger.error("Error deleting Tape data {}", e.getMessage());
-            throw new RuntimeException("Failed deleting tape data", e);
-        }
-
+        tapeService.deleteById(id);
     }
-
 }

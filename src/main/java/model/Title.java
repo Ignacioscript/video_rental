@@ -1,6 +1,7 @@
 package model;
 
 import interfaces.DataTransferObject;
+import util.ConsoleColor;
 
 import java.sql.Blob;
 
@@ -54,13 +55,19 @@ public class Title implements DataTransferObject {
 
     @Override
     public String toString() {
-        return "Title{" +
-                "titleId=" + titleId +
-                ", title='" + title + '\'' +
-                ", year=" + year +
-                ", price=" + price +
-                ", URL='" + URL + '\'' +
-                ", image='" + image + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        return sb.append("TITLE:")
+                .append("\n \t\t")
+                .append(ConsoleColor.BLUE_BOLD)
+                .append("TITLE ID: ").append(getId())
+                .append(" -TITLE: ").append(getTitle().toString())
+                .append(" -YEAR: ").append(getYear())
+                .append(" -PRICE: ").append(getPrice())
+                .append(" -URL: ").append(getURL())
+                .append("\033[0m")
+                .append("\n")
+                .toString();
     }
+
+
 }

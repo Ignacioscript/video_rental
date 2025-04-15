@@ -1,10 +1,11 @@
 package model;
 
 import interfaces.DataTransferObject;
+import util.ConsoleColor;
 
 public class Customer implements DataTransferObject {
 
-    @Id
+
     private int customerID;
     private String customerName;
     private String customerAddress;
@@ -53,11 +54,14 @@ public class Customer implements DataTransferObject {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerID=" + customerID +
-                ", customerName='" + customerName + '\'' +
-                ", customerAddress='" + customerAddress + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+
+        return sb.append("Customer-> ")
+                .append(ConsoleColor.CYAN_BOLD_BRIGHT)
+                .append("ID: ").append(getId())
+                .append("NAME: ").append(getCustomerName())
+                .append("ADDRESS: ").append(getCustomerAddress())
+                .append("PHONE: ").append(getCustomerPhone()).toString();
+
     }
 }
